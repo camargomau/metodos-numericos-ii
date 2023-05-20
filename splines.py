@@ -31,7 +31,7 @@ class Splines:
 		self.s = [0 for _ in range(self.n)]
 		self.polynomials = [0 for _ in range(self.n)]
 
-		self.equations_to_solve	= [0 for _ in range(self.n)]
+		self.equations_to_solve	= [0 for _ in range(self.n+1)]
 
 		print("Para introducir los puntos en la tabla, siga el formato x,f(x):")
 		for i in range(self.n+1):
@@ -41,8 +41,18 @@ class Splines:
 			self.h[i] = self.points[i+1][x] - self.points[i][x]
 			self.differences[i] = (self.points[i+1][y] - self.points[i][y])/(self.points[i+1][x] - self.points[i][x])
 
+	def solve(self):
+		for i in range(self.n+1):
+			if i == 0 or i == self.n:
+				self.equations_to_solve[i] = sympify(f"s{i}")
+			else:
+				self.equations_to_solve[i] = f"s{i-1}*{self.h[i-1]} + 2*s{i}*{self.h[i-1]+self.h[i]} + s{i+1}*{self.h[i] - 6*{self.differences[i]-self.differences[i-1]}}"
+
 		print(self.points)
 		print(self.h)
 		print(self.differences)
+		print(self.s)
+		print(self.equations_to_solve)
 
 test = Splines()
+test.solve()
