@@ -1,58 +1,69 @@
-from input import Input
-from sympy import sympify
+"""
+Interpolates a table through splines
+"""
+
+from sympy import sympify, Symbol
+import input_types
+
 x, y = 0, 1
 
+
 class SplinePolynomial:
-	coefficients = [0 for _ in range(4)]
-	full_form = sympify(0)
-	simplified_form = sympify(0)
+    coefficients = [0 for _ in range(4)]
+    full_form = sympify(0)
+    simplified_form = sympify(0)
 
-class Splines:
-	# n es el número de intervalos; n+1 puntos
-	n = int()
-	points = list()
 
-	h = list()
-	differences = list()
+class SplineInterpolation:
+    """
+    Class that contains the table, the splines and other relevant values
+    Also contains the methods that do all the work
+    """
 
-	s = list() 
-	polynomials = list()
+    n = int()
+    """n is the amount of intervals; we have n+1 points"""
+    points = []
 
-	equations_to_solve = list()
+    h = []
+    differences = []
 
-	def __init__(self):
-		self.n = Input.int("¿Cuántos intervalos tiene la tabla? ")
+    s = []
+    splines = []
 
-		self.points = [[0 for _ in range(2)] for _ in range(self.n+1)]
+    symbols = []
+    equations_to_solve = []
 
-		self.h = [0 for _ in range(self.n)]
-		self.differences = [0 for _ in range(self.n)]
+    def __init__(self):
+        self.n = input_types.integer("¿Cuántos intervalos tiene la tabla? ")
 
-		self.s = [0 for _ in range(self.n)]
-		self.polynomials = [0 for _ in range(self.n)]
+        print("Para introducir los puntos en la tabla,"
+              " siga el formato \"x f(x)\":")
+        self.points = [input_types.real(
+            f"• Punto {i}: ", 2) for i in range(self.n+1)]
 
-		self.equations_to_solve	= [0 for _ in range(self.n+1)]
+        self.h = [self.points[i+1][x] - self.points[i][x]
+                  for i in range(self.n)]
+        self.differences = [(self.points[i+1][y] - self.points[i][y]) /
+                            (self.points[i+1][x] - self.points[i][x])
+                            for i in range(self.n)]
 
-		print("Para introducir los puntos en la tabla, siga el formato x,f(x):")
-		for i in range(self.n+1):
-			self.points[i] = Input.real(f"• Punto {i}: ", 2)
+    def equations(self):
+        self.symbols = [Symbol(f"s{i}") for i in range(self.n+1)]
+        self.equations_to_solve = [
+            sympify(f"s{i}") if (i == 0 or i == self.n) else sympify(
+                f"""s{i-1}*{self.h[i-1]} + 2*s{i}*{self.h[i-1]+self.h[i]}
+                + s{i+1}*{self.h[i]}
+                - 6*{self.differences[i]-self.differences[i-1]}""")
+            for i in range(self.n+1)
+        ]
 
-		for i in range(self.n):
-			self.h[i] = self.points[i+1][x] - self.points[i][x]
-			self.differences[i] = (self.points[i+1][y] - self.points[i][y])/(self.points[i+1][x] - self.points[i][x])
+        print(self.points)
+        print(self.h)
+        print(self.differences)
+        print(self.s)
+        print(self.symbols)
+        print(self.equations_to_solve)
 
-	def solve(self):
-		for i in range(self.n+1):
-			if i == 0 or i == self.n:
-				self.equations_to_solve[i] = sympify(f"s{i}")
-			else:
-				self.equations_to_solve[i] = f"s{i-1}*{self.h[i-1]} + 2*s{i}*{self.h[i-1]+self.h[i]} + s{i+1}*{self.h[i] - 6*{self.differences[i]-self.differences[i-1]}}"
 
-		print(self.points)
-		print(self.h)
-		print(self.differences)
-		print(self.s)
-		print(self.equations_to_solve)
-
-test = Splines()
-test.solve()
+test = SplineInterpolation()
+test.equations()
