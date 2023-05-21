@@ -33,12 +33,16 @@ class SplinePolynomial:
         """The spline as a sympy object."""
 
         x_sign = "-" if spline.points[i][absc] >= 0 else "+"
-        coeff_sign = ["+" if self.coefficients[i] >= 0 else "-" for i in range(0, 4)]
+        coeff_sign = ["+" if self.coefficients[i]
+                      >= 0 else "-"for i in range(0, 4)]
 
         self.full_expression = (
-            f"{float(self.coefficients[a])}(x {x_sign} {abs(spline.points[i][absc])})^3 {coeff_sign[b]} "
-            f"{abs(self.coefficients[b])}(x {x_sign} {abs(spline.points[i][absc])})^2 {coeff_sign[c]} "
-            f"{abs(self.coefficients[c])}(x {x_sign} {abs(spline.points[i][absc])}) {coeff_sign[d]} "
+            f"{float(self.coefficients[a])}(x {x_sign} "
+            f"{abs(spline.points[i][absc])})^3 {coeff_sign[b]} "
+            f"{abs(self.coefficients[b])}(x {x_sign} "
+            f"{abs(spline.points[i][absc])})^2 {coeff_sign[c]} "
+            f"{abs(self.coefficients[c])}(x {x_sign} "
+            f"{abs(spline.points[i][absc])}) {coeff_sign[d]} "
             f"{abs(self.coefficients[d])}"
         )
         """The spline's polynomial in its full non-developed form."""
