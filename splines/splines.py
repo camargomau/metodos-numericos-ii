@@ -2,7 +2,7 @@
 Interpolates a table through splines.
 """
 
-from sympy import expand, solve, Symbol
+from sympy import expand, plot, solve, Symbol
 import input_types
 
 absc, ord = 0, 1
@@ -94,18 +94,22 @@ class SplineInterpolation:
         full_splines = [str(spline) for spline in self.splines]
         developed_splines = [str(spline.polynomial) for spline in self.splines]
 
-        full_splines_string, developed_splines_string = "", ""
+        full_string, developed_string = "", ""
         for i in range(self.n):
-            full_splines_string += f"\n• {full_splines[i]}"
-            developed_splines_string += f"\n• {developed_splines[i]}"
+            full_string += (f"\n• g_{i}(x) = {full_splines[i]} en "
+                            f"[{self.points[i][absc]}, "
+                            f"{self.points[i+1][absc]}]")
+            developed_string += (f"\n• g_{i}(x) = {developed_splines[i]} en "
+                                 f"[{self.points[i][absc]}, "
+                                 f"{self.points[i+1][absc]}]")
 
         return (
             f"La tabla introducida fue:"
             f"\n\n{table_string}\n\n"
             f"Los splines que interpolan esta tabla son:"
-            f"{full_splines_string}\n\n"
+            f"{full_string}\n\n"
             f"En su forma desarrollada:"
-            f"{developed_splines_string}"
+            f"{developed_string}"
         )
 
     def solve_equations(self):
@@ -134,8 +138,33 @@ class SplineInterpolation:
         Method that generates the splines based off of
         the results of solving the necessary equations
         """
+
         self.solve_equations()
         self.splines = [SplinePolynomial(self, i) for i in range(self.n)]
+
+    def interpolate(self):
+        """
+        Method that interpolates a given value by using the generated splines
+        """
+
+        value = input_types.real("¿Qué valor desea interpolar?")
+
+        while (value < self.points[0][absc] or
+                value > self.points[self.n][absc]):
+            value = input_types("-> Introduzca un valor dentro de la tabla:")
+
+        for i in range(self.n):
+            if (value >= self.points[i][absc] and
+                    value <= self.points[i+1][absc]):
+                return self.splines[i].polynomial.evalf(n=6, subs={x: value})
+
+    def plot(self):
+        polynomials = [spline.polynomial for spline in self.splines]
+        ranges = [(x, self.points[i][absc], self.points[i+1][absc])
+                  for i in range(self.n)]
+        to_plot = tuple(zip(polynomials, ranges))
+
+        plot(*to_plot, title="Splines")
 
     def generate_table_string(self):
         """
@@ -170,4 +199,6 @@ class SplineInterpolation:
 
 table = SplineInterpolation()
 table.generate_splines()
+table.plot()
 print(table)
+print(table.interpolate())
