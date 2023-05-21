@@ -2,7 +2,7 @@
 Interpolates a table through splines.
 """
 
-from sympy import expand, solve, Symbol
+from sympy import expand, solve, Symbol, pretty, evaluate, Abs
 import input_types
 
 absc, ord = 0, 1
@@ -24,7 +24,7 @@ class SplinePolynomial:
             ((spline.s[i+1] + 2*spline.s[i])/6)*spline.h[i]
         self.coefficients[d] = spline.points[i][ord]
 
-        self.polynomial = expand(
+        self.polynomial = evaluate(
             self.coefficients[a]*(x - spline.points[i][absc])**3 +
             self.coefficients[b]*(x - spline.points[i][absc])**2 +
             self.coefficients[c]*(x - spline.points[i][absc]) +
@@ -32,11 +32,14 @@ class SplinePolynomial:
         )
         """The spline as a sympy object."""
 
+        x_sign = "-" if spline.points[i][absc] >= 0 else "+"
+        coeff_sign = ["+" if self.coefficients[i] >= 0 else "-" for i in range(0, 4)]
+
         self.full_expression = (
-            f"{self.coefficients[a]}(x - {spline.points[i][absc]})**3 +"
-            f"{self.coefficients[b]}(x - {spline.points[i][absc]})**2 +"
-            f"{self.coefficients[c]}(x - {spline.points[i][absc]}) +"
-            f"{self.coefficients[d]}"
+            f"{float(self.coefficients[a])}(x {x_sign} {abs(spline.points[i][absc])})^3 {coeff_sign[b]} "
+            f"{abs(self.coefficients[b])}(x {x_sign} {abs(spline.points[i][absc])})^2 {coeff_sign[c]} "
+            f"{abs(self.coefficients[c])}(x {x_sign} {abs(spline.points[i][absc])}) {coeff_sign[d]} "
+            f"{abs(self.coefficients[d])}"
         )
         """The spline's polynomial in its full non-developed form."""
 
@@ -110,7 +113,33 @@ class SplineInterpolation:
         self.equations()
         self.splines = [SplinePolynomial(self, i) for i in range(self.n)]
 
+    def print_table(self):
+        encabezado = [["i", "x_i", "f(x_i)", "h_i", "f[x_i, x_i+1]"],
+                      ["", "", "", "", "", ""]]
+
+        print("| {:^3} | {:^9} | {:^9} | {:^9} | {:^13} |".format(
+            *encabezado[0]))
+        print(
+            "| {:-^3} | {:-^9} | {:-^9} | {:-^9} | {:-^13} |"
+            .format(*encabezado[1]))
+
+        for i in range(self.n+1):
+            row = [i] + [float(p) for p in self.points[i]]
+
+            if i != self.n:
+                row += [float(self.h[i])] + [float(self.differences[i])]
+                print(
+                    "| {:^3} | {:< 9.6g} | {:< 9.6g} |"
+                    " {:< 9.6g} | {:< 13.6g} |"
+                    .format(*row))
+            else:
+                row += [" N/A"] + [" N/A"]
+                print(
+                    "| {:^3} | {:< 9.10g} | {:< 9.10g} | {:<9} | {:<13} |"
+                    .format(*row))
+
 
 test = SplineInterpolation()
-test.equations()
 test.polynomials()
+test.print_table()
+print(test.splines[0])
