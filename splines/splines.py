@@ -29,7 +29,7 @@ class SplinePolynomial:
             self.coefficients[b]*(x - spline.points[i][absc])**2 +
             self.coefficients[c]*(x - spline.points[i][absc]) +
             self.coefficients[d]
-        )
+        ).evalf(n=6)
         """The spline as a sympy object."""
 
         x_sign = "-" if spline.points[i][absc] >= 0 else "+"
@@ -37,13 +37,13 @@ class SplinePolynomial:
                       >= 0 else "-"for i in range(0, 4)]
 
         self.full_expression = (
-            f"{float(self.coefficients[a])}(x {x_sign} "
-            f"{abs(spline.points[i][absc])})^3 {coeff_sign[b]} "
-            f"{abs(self.coefficients[b])}(x {x_sign} "
-            f"{abs(spline.points[i][absc])})^2 {coeff_sign[c]} "
-            f"{abs(self.coefficients[c])}(x {x_sign} "
-            f"{abs(spline.points[i][absc])}) {coeff_sign[d]} "
-            f"{abs(self.coefficients[d])}"
+            f"{round(self.coefficients[a], 6)}(x {x_sign} "
+            f"{round(abs(spline.points[i][absc]), 6)})^3 {coeff_sign[b]} "
+            f"{round(abs(self.coefficients[b]), 6)}(x {x_sign} "
+            f"{round(abs(spline.points[i][absc]), 6)})^2 {coeff_sign[c]} "
+            f"{round(abs(self.coefficients[c]), 6)}(x {x_sign} "
+            f"{round(abs(spline.points[i][absc]), 6)}) {coeff_sign[d]} "
+            f"{round(abs(self.coefficients[d]), 6)}"
         )
         """The spline's polynomial in its full non-developed form."""
 
@@ -138,8 +138,11 @@ class SplineInterpolation:
         self.splines = [SplinePolynomial(self, i) for i in range(self.n)]
 
     def generate_table_string(self):
-        to_print = ""
+        """
+        Method that puts the table into a nicely-formatted string.
+        """
 
+        to_print = ""
         header = [["i", "x_i", "f(x_i)", "h_i", "f[x_i, x_i+1]"],
                   ["", "", "", "", "", ""]]
         to_print += ("| {:^3} | {:^9} | {:^9} | {:^9} | {:^13} |"
