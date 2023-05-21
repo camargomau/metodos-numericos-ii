@@ -2,7 +2,7 @@
 Interpolates a table through splines.
 """
 
-from sympy import sympify, Symbol, solve, expand
+from sympy import expand, solve, Symbol
 import input_types
 
 absc, ord = 0, 1
@@ -11,13 +11,18 @@ x = Symbol("x")
 
 
 class SplinePolynomial:
+    """
+    Class that contains a given spline.
+    """
+
     def __init__(self, spline, i):
         self.coefficients = [0, 0, 0, 0]
-        self.coefficients[d] = spline.points[i][ord]
+        """Contains the coefficients of the spline's polynomial."""
+        self.coefficients[a] = (spline.s[i+1] - spline.s[i])/(6 * spline.h[i])
+        self.coefficients[b] = spline.s[i]/2
         self.coefficients[c] = spline.differences[i] - \
             ((spline.s[i+1] + 2*spline.s[i])/6)*spline.h[i]
-        self.coefficients[b] = spline.s[i]/2
-        self.coefficients[a] = (spline.s[i+1] - spline.s[i])/(6 * spline.h[i])
+        self.coefficients[d] = spline.points[i][ord]
 
         self.polynomial = expand(
             self.coefficients[a]*(x - spline.points[i][absc])**3 +
@@ -25,6 +30,7 @@ class SplinePolynomial:
             self.coefficients[c]*(x - spline.points[i][absc]) +
             self.coefficients[d]
         )
+        """The spline as a sympy object."""
 
         self.full_expression = (
             f"{self.coefficients[a]}(x - {spline.points[i][absc]})**3 +"
@@ -32,6 +38,7 @@ class SplinePolynomial:
             f"{self.coefficients[c]}(x - {spline.points[i][absc]}) +"
             f"{self.coefficients[d]}"
         )
+        """The spline's polynomial in its full non-developed form."""
 
     def __str__(self):
         return self.full_expression
@@ -51,17 +58,28 @@ class SplineInterpolation:
               " siga el formato \"x f(x)\":")
         self.points = [input_types.real(
             f"• Punto {i}: ", 2) for i in range(self.n+1)]
+        """All the points that are to be interpolated;
+        list of lists of the form (x, f(x))."""
 
         self.h = [self.points[i+1][absc] - self.points[i][absc]
                   for i in range(self.n)]
+        """List of every interval's size"""
         self.differences = [(self.points[i+1][ord] - self.points[i][ord]) /
                             (self.points[i+1][absc] - self.points[i][absc])
                             for i in range(self.n)]
+        """List of every interval's finite difference"""
 
         self.s = []
+        """List of every S value;
+        these are used to calculate the splines' polynomials"""
         self.splines = []
+        """List of every spline as a SplinePolynomial"""
         self.symb = []
+        """List of every S symbol (s0, s1, etc.);
+        only used for telling sympy to solve
+        for these values in the equations"""
         self.equations_to_solve = []
+        """List of every equation that's to be solved"""
 
     def equations(self):
         """
@@ -85,15 +103,12 @@ class SplineInterpolation:
                       dict=True)[0].values())
 
     def polynomials(self):
+        """
+        Method that generates the splines based off of
+        the results of solving the necessary equations
+        """
+        self.equations()
         self.splines = [SplinePolynomial(self, i) for i in range(self.n)]
-
-        print(self.points)
-        print(self.h)
-        print(self.differences)
-        print(self.symb)
-        print(self.equations_to_solve)
-        print(self.s)
-        print(self.splines[0])
 
 
 test = SplineInterpolation()
