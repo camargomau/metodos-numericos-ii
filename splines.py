@@ -1,8 +1,8 @@
 """
-Interpolates a table through splines
+Interpolates a table through splines.
 """
 
-from sympy import sympify, Symbol
+from sympy import sympify, Symbol, solve
 import input_types
 
 x, y = 0, 1
@@ -16,12 +16,12 @@ class SplinePolynomial:
 
 class SplineInterpolation:
     """
-    Class that contains the table, the splines and other relevant values
-    Also contains the methods that do all the work
+    Class that contains the table, the splines and other relevant values,
+    as well as the methods that do all the work.
     """
 
     n = int()
-    """n is the amount of intervals; we have n+1 points"""
+    """n is the amount of intervals; we have n+1 points."""
     points = []
 
     h = []
@@ -48,6 +48,11 @@ class SplineInterpolation:
                             for i in range(self.n)]
 
     def equations(self):
+        """
+        Method that generates the equations we have to solve
+        to get the coefficients of every spline, then solves them;
+        the end result is the population of the s list
+        """
         self.symbols = [Symbol(f"s{i}") for i in range(self.n+1)]
         self.equations_to_solve = [
             sympify(f"s{i}") if (i == 0 or i == self.n) else sympify(
@@ -57,12 +62,16 @@ class SplineInterpolation:
             for i in range(self.n+1)
         ]
 
+        self.s = list(solve(self.equations_to_solve, self.symbols,
+                      dict=True)[0].values())
+
         print(self.points)
         print(self.h)
         print(self.differences)
         print(self.s)
         print(self.symbols)
         print(self.equations_to_solve)
+        print(self.s)
 
 
 test = SplineInterpolation()

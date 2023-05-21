@@ -1,12 +1,12 @@
 """
-Provides functions that handle input with various data types
+Provides functions that handle input with various data types.
 """
 from sympy import sympify
 
 
 def integer(prompt):
     """
-    Function for handling the input of an integer
+    Function for handling the input of an integer.
     """
 
     while True:
@@ -27,8 +27,8 @@ def integer(prompt):
 
 def real(prompt, size=1, separator=" "):
     """
-    Function for handling the input of real numbers (sympy Float/Rational)
-    Supports a single value or a list of values
+    Function for handling the input of real numbers (sympy Float/Rational);
+    supports a single value or a list of values.
     """
 
     if size == 1:
