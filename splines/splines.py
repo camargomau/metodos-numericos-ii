@@ -2,8 +2,8 @@
 Interpolates a table through splines.
 """
 
-from sympy import expand, solve, Symbol, pretty, evaluate, Abs
-import input_types
+from sympy import expand, solve, Symbol
+import utils.input_types as input_types
 
 absc, ord = 0, 1
 a, b, c, d = 0, 1, 2, 3
@@ -24,7 +24,7 @@ class SplinePolynomial:
             ((spline.s[i+1] + 2*spline.s[i])/6)*spline.h[i]
         self.coefficients[d] = spline.points[i][ord]
 
-        self.polynomial = evaluate(
+        self.polynomial = expand(
             self.coefficients[a]*(x - spline.points[i][absc])**3 +
             self.coefficients[b]*(x - spline.points[i][absc])**2 +
             self.coefficients[c]*(x - spline.points[i][absc]) +
