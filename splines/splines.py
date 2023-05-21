@@ -3,7 +3,7 @@ Interpolates a table through splines.
 """
 
 from sympy import expand, solve, Symbol
-import utils.input_types as input_types
+import input_types
 
 absc, ord = 0, 1
 a, b, c, d = 0, 1, 2, 3
@@ -88,7 +88,27 @@ class SplineInterpolation:
         self.equations_to_solve = []
         """List of every equation that's to be solved"""
 
-    def equations(self):
+    def __str__(self):
+        table_string = self.generate_table_string()
+
+        full_splines = [str(spline) for spline in self.splines]
+        developed_splines = [str(spline.polynomial) for spline in self.splines]
+
+        full_splines_string, developed_splines_string = "", ""
+        for i in range(self.n):
+            full_splines_string += f"\n• {full_splines[i]}"
+            developed_splines_string += f"\n• {developed_splines[i]}"
+
+        return (
+            f"La tabla introducida fue:"
+            f"\n\n{table_string}\n\n"
+            f"Los splines que interpolan esta tabla son:"
+            f"{full_splines_string}\n\n"
+            f"En su forma desarrollada:"
+            f"{developed_splines_string}"
+        )
+
+    def solve_equations(self):
         """
         Method that generates the equations we have to solve
         to get the coefficients of every spline, then solves them;
@@ -109,41 +129,42 @@ class SplineInterpolation:
         self.s = list(solve(self.equations_to_solve, self.symb,
                       dict=True)[0].values())
 
-    def polynomials(self):
+    def generate_splines(self):
         """
         Method that generates the splines based off of
         the results of solving the necessary equations
         """
-        self.equations()
+        self.solve_equations()
         self.splines = [SplinePolynomial(self, i) for i in range(self.n)]
 
-    def print_table(self):
-        encabezado = [["i", "x_i", "f(x_i)", "h_i", "f[x_i, x_i+1]"],
-                      ["", "", "", "", "", ""]]
+    def generate_table_string(self):
+        to_print = ""
 
-        print("| {:^3} | {:^9} | {:^9} | {:^9} | {:^13} |".format(
-            *encabezado[0]))
-        print(
-            "| {:-^3} | {:-^9} | {:-^9} | {:-^9} | {:-^13} |"
-            .format(*encabezado[1]))
+        header = [["i", "x_i", "f(x_i)", "h_i", "f[x_i, x_i+1]"],
+                  ["", "", "", "", "", ""]]
+        to_print += ("| {:^3} | {:^9} | {:^9} | {:^9} | {:^13} |"
+                     .format(*header[0]))
+        to_print += ("\n| {:-^3} | {:-^9} | {:-^9} | {:-^9} | {:-^13} |"
+                     .format(*header[1]))
 
         for i in range(self.n+1):
             row = [i] + [float(p) for p in self.points[i]]
 
             if i != self.n:
                 row += [float(self.h[i])] + [float(self.differences[i])]
-                print(
-                    "| {:^3} | {:< 9.6g} | {:< 9.6g} |"
+                to_print += (
+                    "\n| {:^3} | {:< 9.6g} | {:< 9.6g} |"
                     " {:< 9.6g} | {:< 13.6g} |"
                     .format(*row))
             else:
                 row += [" N/A"] + [" N/A"]
-                print(
-                    "| {:^3} | {:< 9.10g} | {:< 9.10g} | {:<9} | {:<13} |"
+                to_print += (
+                    "\n| {:^3} | {:< 9.10g} | {:< 9.10g} | {:<9} | {:<13} |"
                     .format(*row))
 
+        return to_print
 
-test = SplineInterpolation()
-test.polynomials()
-test.print_table()
-print(test.splines[0])
+
+table = SplineInterpolation()
+table.generate_splines()
+print(table)
