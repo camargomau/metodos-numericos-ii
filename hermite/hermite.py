@@ -37,6 +37,8 @@ def reiniciar_programa():
         print("Programa finalizado.")
 
 def main():
+    print("Método de Hermite")
+
     n = int(input("Ingrese la cantidad de datos: "))
     x = []
     fx = []
@@ -119,4 +121,5 @@ def main():
     reiniciar_programa()
 
 # Iniciar el programa
-main()
+if __name__ == "__main__":
+    main()
