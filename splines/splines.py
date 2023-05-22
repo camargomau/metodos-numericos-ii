@@ -58,10 +58,10 @@ class SplineInterpolation:
     """
 
     def __init__(self):
-        self.n = input_types.integer("¿Cuántos intervalos tiene la tabla? ")
+        self.n = input_types.integer("\n• ¿Cuántos intervalos tiene la tabla? ")
         """n is the amount of intervals; we have n+1 points."""
 
-        print("Para introducir los puntos en la tabla,"
+        print("\nPara introducir los puntos en la tabla,"
               " siga el formato \"x f(x)\":")
         self.points = [input_types.real(
             f"• Punto {i}: ", 2) for i in range(self.n+1)]
@@ -147,18 +147,28 @@ class SplineInterpolation:
         Method that interpolates a given value by using the generated splines
         """
 
-        value = input_types.real("¿Qué valor desea interpolar?")
+        while True:
+            value = input_types.real("• ¿Qué valor desea interpolar? ")
 
-        while (value < self.points[0][absc] or
-                value > self.points[self.n][absc]):
-            value = input_types("-> Introduzca un valor dentro de la tabla:")
+            while (value < self.points[0][absc] or
+                    value > self.points[self.n][absc]):
+                value = input_types.real("-> Introduzca un valor dentro de la tabla: ")
 
-        for i in range(self.n):
-            if (value >= self.points[i][absc] and
-                    value <= self.points[i+1][absc]):
-                return self.splines[i].polynomial.evalf(n=6, subs={x: value})
+            for i in range(self.n):
+                if (value >= self.points[i][absc] and
+                        value <= self.points[i+1][absc]):
+                    interpolation = self.splines[i].polynomial.evalf(n=6, subs={x: value})
+
+            print(f"-> Interpolando, se obtiene el punto ({value}, {interpolation})")
+
+            another_q = input_types.boolean("\n¿Desea interpolar otro valor? (S/N) ", "S", "N")
+            if another_q == "N" or another_q == "n":
+                break
 
     def plot(self):
+        """
+        Method that plots all the generated splines
+        """
         polynomials = [spline.polynomial for spline in self.splines]
         ranges = [(x, self.points[i][absc], self.points[i+1][absc])
                   for i in range(self.n)]
@@ -197,8 +207,24 @@ class SplineInterpolation:
         return to_print
 
 
-table = SplineInterpolation()
-table.generate_splines()
-table.plot()
-print(table)
-print(table.interpolate())
+def main():
+    print("Método de Splines")
+    while True:
+        spline = SplineInterpolation()
+        spline.generate_splines()
+        print(f"\n{spline}\n")
+
+        interpolate_q = input_types.boolean("¿Desea interpolar algún valor? (S/N) ", "S", "N")
+        if interpolate_q == "S" or interpolate_q == "s":
+            spline.interpolate()
+
+        plot_q = input_types.boolean("¿Desea graficar los splines? (S/N) ", "S", "N")
+        if plot_q == "S" or plot_q == "s":
+            spline.plot()
+
+        another_q = input_types.boolean("¿Desea interpolar otra tabla? (S/N) ", "S", "N")
+        if another_q == "N" or another_q == "n":
+            break
+
+if __name__ == "__main__":
+    main()
