@@ -30,14 +30,12 @@ def interpolar_valor(polinomio):
 
 
 def reiniciar_programa():
-    reiniciar = input("¿Desea reiniciar el programa? (s/n): ")
+    reiniciar = input("¿Desea interpolar otra tabla con este método? (s/n): ")
     if reiniciar.lower() == "s":
         main()
-    else:
-        print("Programa finalizado.")
 
 def main():
-    print("Método de Hermite")
+    print("Método de Hermite\n")
 
     n = int(input("Ingrese la cantidad de datos: "))
     x = []
