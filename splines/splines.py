@@ -3,7 +3,7 @@ Interpolates a table through splines.
 """
 
 from sympy import expand, plot, solve, Symbol
-import input_types
+from . import input_types
 
 absc, ord = 0, 1
 a, b, c, d = 0, 1, 2, 3
@@ -162,7 +162,7 @@ class SplineInterpolation:
             print(f"-> Interpolando, se obtiene el punto ({value}, {interpolation})")
 
             another_q = input_types.boolean("\n¿Desea interpolar otro valor? (S/N) ", "S", "N")
-            if another_q == "N" or another_q == "n":
+            if another_q.upper() == "N":
                 break
 
     def plot(self):
@@ -215,15 +215,15 @@ def main():
         print(f"\n{spline}\n")
 
         interpolate_q = input_types.boolean("¿Desea interpolar algún valor? (S/N) ", "S", "N")
-        if interpolate_q == "S" or interpolate_q == "s":
+        if interpolate_q.upper() == "S":
             spline.interpolate()
 
         plot_q = input_types.boolean("¿Desea graficar los splines? (S/N) ", "S", "N")
-        if plot_q == "S" or plot_q == "s":
+        if plot_q.upper() == "S":
             spline.plot()
 
-        another_q = input_types.boolean("¿Desea interpolar otra tabla? (S/N) ", "S", "N")
-        if another_q == "N" or another_q == "n":
+        another_q = input_types.boolean("¿Desea interpolar otra tabla con este método? (S/N) ", "S", "N")
+        if another_q.upper() == "N":
             break
 
 if __name__ == "__main__":

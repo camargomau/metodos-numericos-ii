@@ -63,8 +63,7 @@ def boolean(prompt, opt_1, opt_2):
     opt_1 and opt_2 are single capital letters each
     """
     answer = input(prompt)
-    while (answer != opt_1 and answer != opt_1.lower()
-           and answer != opt_2 and answer != opt_2.lower()):
-            answer = input(f"-> Introduzca {opt_1} o {opt_2}: ")
+    while answer.upper() != opt_1 and answer.upper() != opt_2:
+        answer = input(f"-> Introduzca {opt_1} o {opt_2}: ")
 
     return answer
