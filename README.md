@@ -4,5 +4,5 @@ This repository contains the Python programs that were made for the final projec
 
 These programs were coded by:
 
-- Luis Mauricio Camargo Badillo (@psycake; the owner of this repo)
-- Daniel Gutiérrez Flores (@dxnnielgf)
+- Luis Mauricio Camargo Badillo ([psycake](https://github.com/psycake); the owner of this repo)
+- Daniel Gutiérrez Flores ([dxnnielgf](https://github.com/dxnnielgf))
