@@ -36,6 +36,8 @@ def interpolar_valor(polinomio_simplificado):
 
 
 def main():
+    print("Método de Lagrange\n")
+
     while True:
         n = int(input("Ingrese la cantidad de datos: "))
         x = []
@@ -72,9 +74,10 @@ def main():
             else:
                 break
 
-        repetir = input("¿Desea repetir el programa? (s/n): ")
+        repetir = input("¿Desea interpolar otra tabla con este mismo método? (s/n): ")
         if repetir.lower() != 's':
             break
 
 # Iniciar el programa
-main()
+if __name__ == "__main__":
+    main()
