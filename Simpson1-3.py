@@ -79,4 +79,5 @@ def main():
     print("El área bajo la curva de la tabla dada es: ", area)
 
 # Iniciar el programa
-main()
+if __name__ == "__main__":
+    main()
