@@ -97,11 +97,12 @@ class SplineInterpolation:
 
         full_string, developed_string = "", ""
         for i in range(self.n):
-            full_string += (f"\n• g_{i}(x) = {full_splines[i]} en "
-                            f"[{self.points[i][absc]}, "
+            full_string += (f"\n• g_{i}(x) = {full_splines[i]} "
+                            f"en [{self.points[i][absc]}, "
                             f"{self.points[i+1][absc]}]")
-            developed_string += (f"\n• g_{i}(x) = {developed_splines[i]} en "
-                                 f"[{self.points[i][absc]}, "
+            developed_string += (f"\n• g_{i}(x) = "
+                                 f"{developed_splines[i].replace('**', '^').replace('*', '')} "
+                                 f"en [{self.points[i][absc]}, "
                                  f"{self.points[i+1][absc]}]")
 
         return (
