@@ -1,3 +1,4 @@
+import lagrange.lagrange as lagrange
 import hermite.hermite as hermite
 import splines.splines as splines
 from simpson import simpson_13, simpson_38
@@ -64,7 +65,8 @@ def menu():
                     f"\nIntroduzca un número entre 0 y {len(opciones_metodos.keys())-1}.")
 
         if eleccion_metodo == 1:
-            input("Método de Lagrange: PENDIENTE")
+            clear_screen()
+            lagrange.main()
             continue
         elif eleccion_metodo == 2:
             clear_screen()
