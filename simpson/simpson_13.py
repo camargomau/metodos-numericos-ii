@@ -33,6 +33,8 @@ def calcular_h(x):
     return h
 
 def main():
+    print("Método de Simpson 1/3\n")
+
     x = []
     fx = []
 
@@ -77,6 +79,8 @@ def main():
     area = calcular_simpson_un_tercio(x, fx, h)
 
     print("El área bajo la curva de la tabla dada es: ", area)
+
+    input("\nPresione cualquier tecla para regresar el menú de métodos.")
 
 # Iniciar el programa
 if __name__ == "__main__":

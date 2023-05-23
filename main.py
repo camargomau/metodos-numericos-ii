@@ -1,5 +1,6 @@
 import hermite.hermite as hermite
 import splines.splines as splines
+from simpson import simpson_13, simpson_38
 
 def clear_screen():
     import os
@@ -15,7 +16,7 @@ def portada():
              "Matemáticas Aplicadas y Computación\n",
              "{:-^47}\n".format(""),
              "Proyecto Final",
-             "Lagrange, Newton, Hermite, Splines, Simpson\n",
+             "Lagrange, Hermite, Splines, Simpson\n",
              "Burciaga Piña Erick Osvaldo",
              "Camargo Badillo Luis Mauricio",
 			 "Gudiño Romero Miguel Ángel",
@@ -35,10 +36,10 @@ def menu():
     global eleccion_metodo
     opciones_metodos = {
         1: "Método de Lagrange",
-        2: "Método de Newton",
-        3: "Método de Hermite",
-        4: "Método de Splines",
-        5: "Métodos de Simpson",
+        2: "Método de Hermite",
+        3: "Método de Splines",
+        4: "Método de Simpson 1/3",
+        5: "Método de Simpson 3/8",
 
         0: "Salir"
     }
@@ -66,18 +67,21 @@ def menu():
             input("Método de Lagrange: PENDIENTE")
             continue
         elif eleccion_metodo == 2:
-            input("Método de Newton: PENDIENTE")
-            continue
-        elif eleccion_metodo == 3:
             clear_screen()
             hermite.main()
             continue
-        elif eleccion_metodo == 4:
+        elif eleccion_metodo == 3:
             clear_screen()
             splines.main()
             continue
+        elif eleccion_metodo == 4:
+            clear_screen()
+            simpson_13.main()
+            continue
         elif eleccion_metodo == 5:
-            input("Métodos de Simpson: PENDIENTE")
+            clear_screen()
+            simpson_38.main()
+            continue
         elif eleccion_metodo == 0:
             break
 

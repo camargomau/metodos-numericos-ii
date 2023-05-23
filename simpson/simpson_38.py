@@ -33,6 +33,8 @@ def calcular_h(x):
     return h
 
 def main():
+    print("Método de Simpson 3/8\n")
+
     x = []
     fx = []
 
@@ -77,6 +79,8 @@ def main():
     area = calcular_simpson_tres_octavos(x, fx, h)
 
     print("El área bajo la curva de la tabla dada es: ", area)
+
+    input("\nPresione cualquier tecla para regresar el menú de métodos.")
 
 # Iniciar el programa
 if __name__ == "__main__":
