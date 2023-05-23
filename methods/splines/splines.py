@@ -3,7 +3,8 @@ Interpolates a table through splines.
 """
 
 from sympy import expand, plot, solve, Symbol
-from . import input_types
+from .. import input_types
+from ..utilities import clear_screen
 
 absc, ord = 0, 1
 a, b, c, d = 0, 1, 2, 3
@@ -58,7 +59,7 @@ class SplineInterpolation:
     """
 
     def __init__(self):
-        self.n = input_types.integer("\n• ¿Cuántos intervalos tiene la tabla? ")
+        self.n = input_types.integer("• ¿Cuántos intervalos tiene la tabla? ")
         """n is the amount of intervals; we have n+1 points."""
 
         print("\nPara introducir los puntos en la tabla,"
@@ -209,6 +210,12 @@ class SplineInterpolation:
 
 def main():
     print("Método de Splines")
+    print("\nEste método consiste en interpolar una tabla de datos mediante"
+          "\nsplines: polinomios de tercer grado que aproximan un intervalo"
+          "\nde la tabla cada uno.")
+    input("\nPresiona cualquier tecla para continuar.")
+    clear_screen()
+
     while True:
         spline = SplineInterpolation()
         spline.generate_splines()

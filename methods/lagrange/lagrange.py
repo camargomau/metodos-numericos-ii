@@ -1,5 +1,5 @@
 import sympy
-
+from ..utilities import clear_screen
 
 def calcular_polinomio_interpolador_lagrange(x, fx):
     polinomio_sin_simplificar = ""
@@ -36,7 +36,12 @@ def interpolar_valor(polinomio_simplificado):
 
 
 def main():
-    print("Método de Lagrange\n")
+    print("Método de Lagrange")
+    print("\nEste método de interpolación consiste en construir un polinomio que"
+          "\naproxima una tabla de datos proporcionada, logrando pasar por cada"
+          "\nuno de los puntos en ella.")
+    input("\nPresiona cualquier tecla para continuar.")
+    clear_screen()
 
     while True:
         n = int(input("Ingrese la cantidad de datos: "))

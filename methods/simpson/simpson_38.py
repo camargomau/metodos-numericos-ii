@@ -1,27 +1,28 @@
 import sympy
+from ..utilities import clear_screen
 
-def calcular_simpson_un_tercio(x, fx, h):
+def calcular_simpson_tres_octavos(x, fx, h):
     n = len(x)
-    sum_par = float()
-    sum_p = ""
-    sum_impar = float()
-    sum_i = ""
+    sum_tres = float()
+    sum_t = ""
+    suma = float()
+    sum = ""
     for i in range(1, n-1):
-        if ((i % 2) == 0):
-            sum_par += fx[i]
-            if(i == (n-2)):
-                sum_p += str(fx[i])
+        if ((i % 3) == 0):
+            sum_tres += fx[i]
+            if(i == (n-4)):
+                sum_t += str(fx[i])
             else:
-                sum_p += str(fx[i])+"+"
+                sum_t += str(fx[i])+"+"
         else:
-            sum_impar += fx[i]
-            if(i == (n-1)):
-                sum_i += str(fx[i])
+            suma += fx[i]
+            if(i == (n-2)):
+                sum += str(fx[i])
             else:
-                sum_i += str(fx[i]) + "+"
+                sum += str(fx[i]) + "+"
     # Calcula el área total
-    area = (h / 3) * (fx[0] + fx[n-1] + 2 * sum_par + 4 * sum_impar)
-    a = "("+format(h, ".6f")+" / 3) * (" + str(fx[0])+"+" + str(fx[n-1]) + "+ 2* (" +sum_p+") + 4*(" +sum_i+")"
+    area = ((3*h) / 8) * (fx[0] + fx[n-1] + 2 * sum_tres + 3 * suma)
+    a = "((3*"+format(h, ".6f")+") / 8) * (" + str(fx[0])+"+" + str(fx[n-1]) + "+ 2* (" +sum_t+") + 3*(" +sum+")"
     print(a)
     area_redondeada = round(area, 6)
     return area_redondeada
@@ -33,7 +34,14 @@ def calcular_h(x):
     return h
 
 def main():
-    print("Método de Simpson 1/3\n")
+    print("Método de Simpson 3/8")
+    print("\nEste método es uno de los dos métodos de Simpson. Este método"
+          "\naproxima una integral definida mediante la construccion de"
+          "\npolinomios cúbicos (cf. Simpson 1/3 que utiliza polinomios"
+          "\ncuadráticos)."
+          "\n\nRecuerda que el número de intervalos debe tener un múltiplo de 3.")
+    input("\nPresiona cualquier tecla para continuar.")
+    clear_screen()
 
     x = []
     fx = []
@@ -41,8 +49,8 @@ def main():
     # Validación del número n
     while True:
         n = int(input("Ingrese la cantidad de intervalos: "))
-        if n % 2 != 0:
-            print("El número de intervalos ingresado no cumple con la condición (2n).")
+        if n % 3 != 0:
+            print("El número de intervalos ingresado no cumple con la condición (3n).")
             respuesta = input("¿Desea ingresar otro valor? (s/n): ")
             if respuesta.lower() != 's':
                 return
@@ -76,7 +84,7 @@ def main():
     # Calculamos h
     h = calcular_h(x)
 
-    area = calcular_simpson_un_tercio(x, fx, h)
+    area = calcular_simpson_tres_octavos(x, fx, h)
 
     print("El área bajo la curva de la tabla dada es: ", area)
 

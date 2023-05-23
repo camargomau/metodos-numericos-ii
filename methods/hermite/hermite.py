@@ -1,4 +1,5 @@
 import sympy
+from ..utilities import clear_screen
 
 def calcular_polinomio_interpolador_hermite(z, fz, difs):
     polinomio = ""
@@ -35,7 +36,12 @@ def reiniciar_programa():
         main()
 
 def main():
-    print("Método de Hermite\n")
+    print("Método de Hermite")
+    print("\nEste método de interpolación genera polinomios de aproximación"
+          "\ncon ayuda de la derivada de la función a aproximar; es por ello"
+          "\nque es necesario tener los datos de la derivada a la mano.")
+    input("\nPresiona cualquier tecla para continuar.")
+    clear_screen()
 
     n = int(input("Ingrese la cantidad de datos: "))
     x = []
