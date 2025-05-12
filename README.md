@@ -4,7 +4,7 @@ This repository contains the Python programs that were made for the final projec
 
 These programs were coded by:
 
-- Erick Osvaldo Burciaga Piña ([erickburcy](https://github.com/erickburcy))
-- Luis Mauricio Camargo Badillo ([psycake](https://github.com/psycake); the owner of this repo)
-- Miguel Ángel Gudiño Romero ([Dasher0n](https://github.com/Dasher0n))
-- Daniel Gutiérrez Flores ([dxnnielgf](https://github.com/dxnnielgf))
+- [camargomau](https://github.com/camargomau); the owner of this repo
+- [Dasher0n](https://github.com/Dasher0n)
+- [dxnnielgf](https://github.com/dxnnielgf)
+- [erickburcy](https://github.com/erickburcy)
